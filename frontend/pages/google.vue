@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col p-4 h-4/5">
+  <div class="flex flex-col p-4 h-[80vh]">
     <div class="flex justify-between items-center gap-2 lg:space-x-4">
       <div class="flex items-center space-x-4">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

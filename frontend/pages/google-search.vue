@@ -163,10 +163,15 @@ const route = useRoute()
 const router = useRouter()
 const search = ref(route.query.q)
 const onSubmit = () => {
-  router.push({
-    path: 'google-search',
-    query: { q: search.value },
-  })
+  const emptySearch = search.value.trim();
+  if (emptySearch === '') {
+    router.push('/google');
+  } else {
+    router.push({
+      path: 'google-search',
+      query: { q: emptySearch },
+    });
+  }Ï
 }
 
 const searchResult = [
@@ -197,6 +202,13 @@ const searchResult = [
     link: 'https://www.typescriptlang.org/',
     title: 'TypeScript: JavaScript With Syntax For Types.',
     detail: 'sdfihjadadpakpkp',
+  },
+  {
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Wikipedia_Logo_1.0.png',
+    name: 'Wikipedia',
+    link: 'https://www.wikipedia.org/',
+    title: 'Wikipedia',
+    detail: 'Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.',
   },
 ]
 </script>

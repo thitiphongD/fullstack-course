@@ -1,7 +1,7 @@
 <template>
   <div class="pb-6">
     <div class="flex items-center space-x-1 px-1 cursor-pointer">
-      <img class="rounded-full w-6 h-6" src="{{ item.icon }}">
+      <img class="rounded-full w-6 h-6" :src="item.icon">
       <div class="px-1">
         <p class="text-xs">{{ item.name }}</p>
         <p class="text-xs">{{ item.link }}</p>
