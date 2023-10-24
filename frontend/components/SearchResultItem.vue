@@ -7,8 +7,10 @@
         <p class="text-xs">{{ item.link }}</p>
       </div>
     </div>
-    <p class="text-2xl cursor-pointer hover:underline">{{ item.title }}</p>
-    <p class="text-xs">{{ item.detail }}</p>
+    <div class="py-1">
+      <p class="text-xl cursor-pointer hover:underline text-blue-800">{{ item.title }}</p>
+      <p class="text-xs">{{ item.detail }}</p>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
