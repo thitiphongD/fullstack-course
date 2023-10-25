@@ -23,7 +23,7 @@
               placeholder="Username"
             />
           </div>
-          <p class="text-red-500">{{ errors.username }}</p>
+          <p class="text-xs text-red-500">{{ errors.username }}</p>
         </div>
       </div>
 
@@ -47,7 +47,7 @@
             <Icon :name="eyeIconPassword" color="black" />
           </span>
         </div>
-        <p class="text-red-500">{{ errors.password }}</p>
+        <p class="text-xs text-red-500">{{ errors.password }}</p>
       </div>
       <div class="py-6">
         <button

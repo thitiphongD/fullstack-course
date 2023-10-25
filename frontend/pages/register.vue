@@ -4,93 +4,100 @@
       <Title>ลงทะเบียน - Mhalong</Title>
       <Meta name="description" content="My app description" />
     </Head>
-    <form class="bg-white w-2/5 h-4/5 rounded-md p-6 novalidate">
+    <form @submit="onSubmit" class="bg-white w-2/5 h-5/6 rounded-md p-6">
       <div class="text-center">
-        <p class="text-2xl">Register</p>
-        <p>Sign up for using Mhalong</p>
+        <p class="text-3xl font-bold">Register</p>
+        <p class="text-gray-500">Sign up for using Mhalong</p>
       </div>
       <div class="mt-4 flex flex-col">
         <div class="mb-2">
-          <label for="username">Username</label>
+          <label for="username" class="text-gray-500"
+            >Username<span class="text-red-500">*</span></label
+          >
           <div class="flex items-center">
             <input
+              name="username"
+              v-model="username"
               type="text"
-              id="username"
-              class="border p-2 rounded-md w-full"
+              class="border p-1 rounded-md w-full px-2"
               placeholder="Username"
-              required
             />
           </div>
+          <p class="text-xs text-red-500">{{ errors.username }}</p>
         </div>
-
-        <div class="mb-2">
-          <label for="password">Password</label>
-          <div class="relative">
-            <input
-              v-model="currentPassword"
-              :type="showPasswordPassword ? 'text' : 'password'"
-              id="password"
-              class="border p-2 w-full rounded-md"
-              placeholder="รหัสผ่าน"
-              required
-            />
-            <span
-              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-              @click="togglePasswordVisibility('Password')"
-            >
-              <Icon :name="eyeIconPassword" color="black" />
-            </span>
-          </div>
-        </div>
-
-        <div class="mb-2">
-          <label for="confirmPassword">Confirm Password</label>
-          <div class="relative rounded-md">
-            <input
-              v-model="confirmPassword"
-              :type="showPasswordConfirm ? 'text' : 'password'"
-              id="confirmPassword"
-              class="border p-2 w-full rounded-md"
-              placeholder="ยืนยันรหัสผ่าน"
-              required
-            />
-            <span
-              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-              @click="togglePasswordVisibility('Confirm')"
-            >
-              <Icon :name="eyeIconConfirm" color="black" />
-            </span>
-          </div>
-        </div>
-
-        <div class="py-6">
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+      </div>
+      <div class="mb-2">
+        <label for="password" class="text-gray-500"
+          >Password<span class="text-red-500">*</span></label
+        >
+        <div class="relative">
+          <input
+            v-model="password"
+            :type="showPasswordPassword ? 'text' : 'password'"
+            id="password"
+            class="border p-1 w-full rounded-md px-2"
+            placeholder="รหัสผ่าน"
+            required
+          />
+          <span
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+            @click="togglePassword('Password')"
           >
-            Sign up
-          </button>
+            <Icon :name="eyeIconPassword" color="black" />
+          </span>
         </div>
-        <div class="py-2">
-          <p>
-            Already have an account?
-            <a href="/login" class="text-blue-800 underline">Login</a>
-          </p>
+        <p class="text-xs text-red-500">{{ errors.password }}</p>
+      </div>
+      <div class="mb-2">
+        <label for="confirmPassword" class="text-gray-500"
+          >Confirm Password<span class="text-red-500">*</span></label
+        >
+        <div class="relative">
+          <input
+            v-model="confirmPassword"
+            :type="showPasswordConfirm ? 'text' : 'password'"
+            id="confirmPassword"
+            class="border p-1 w-full rounded-md px-2"
+            placeholder="ยืนยันรหัสผ่าน"
+            required
+          />
+          <span
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+            @click="togglePassword('Confirm')"
+          >
+            <Icon :name="eyeIconConfirm" color="black" />
+          </span>
         </div>
+        <p class="text-xs text-red-500">{{ errors.confirmPassword }}</p>
+      </div>
+      <div class="py-2">
+        <button
+          class="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+        >
+          Sign Up
+        </button>
+      </div>
+      <div class="py-2">
+        <p class="text-gray-500">
+          Already have an account?
+          <a href="/login" class="text-blue-800 underline">Login</a>
+        </p>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
+import { useField, useForm } from "vee-validate";
+import { toTypedSchema } from "@vee-validate/zod";
+import * as zod from "zod";
 import { ref, computed } from "vue";
 
-const currentPassword = ref("");
-const confirmPassword = ref("");
-
+const inputPassword = ref("");
 const showPasswordPassword = ref(false);
 const showPasswordConfirm = ref(false);
 
-const togglePasswordVisibility = (field) => {
+const togglePassword = (field) => {
   if (field === "Password") {
     showPasswordPassword.value = !showPasswordPassword.value;
   } else if (field === "Confirm") {
@@ -105,6 +112,31 @@ const eyeIconPassword = computed(() =>
 const eyeIconConfirm = computed(() =>
   showPasswordConfirm.value ? "uil:eye" : "uil:eye-slash"
 );
-</script>
 
-<style scoped></style>
+const validationSchema = toTypedSchema(
+  zod.object({
+    username: zod
+      .string()
+      .nonempty("กรุณากรอกข้อมูล")
+      .min(8, { message: "กรุณากรอกข้อมูล" }),
+    password: zod
+      .string()
+      .nonempty("กรุณากรอกข้อมูล")
+      .min(8, { message: "กรุณากรอกข้อมูล" }),
+    confirmPassword: zod
+      .string()
+      .nonempty("กรุณากรอกข้อมูล")
+      .min(8, { message: "กรุณากรอกข้อมูล" }),
+  })
+);
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
+const { value: username } = useField("username");
+const { value: password } = useField("password");
+const { value: confirmPassword } = useField("confirmPassword");
+
+const onSubmit = handleSubmit((values) => {
+  alert(JSON.stringify(values, null, 2));
+});
+</script>
