@@ -27,7 +27,7 @@
           <label for="password">Password</label>
           <div class="relative">
             <input
-              v-model="password"
+              v-model="currentPassword"
               :type="showPasswordPassword ? 'text' : 'password'"
               id="password"
               class="border p-2 w-full rounded-md"
@@ -84,7 +84,7 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const password = ref("");
+const currentPassword = ref("");
 const confirmPassword = ref("");
 
 const showPasswordPassword = ref(false);
