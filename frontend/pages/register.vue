@@ -1,26 +1,31 @@
 <template>
-  <div class="h-screen bg-blue-500 flex items-center justify-center">
+  <FailModal v-model="isLoginFail" title="สมัครสมาชิกไม่สำเร็จ" description="มีบางอย่างผิดพลาด">
+  </FailModal>
+  <Modal v-model="isShowSuccessModal" title="สมัครสมาชิกสำเร็จ" description="คุณสามารถเข้าสู่ระบบได้เลย">
+  </Modal>
+  <div class="h-screen flex items-center justify-center lg:bg-blue-500">
     <Head>
       <Title>ลงทะเบียน - Mhalong</Title>
-      <Meta name="description" content="My app description" />
+      <Meta name="description" content="My app description"/>
     </Head>
-    <form @submit="onSubmit" class="bg-white w-2/5 h-5/6 rounded-md p-6">
+    <form @submit="onSubmit" class="bg-white w-full h-5/6 rounded-md p-6 lg:w-2/5">
       <div class="text-center">
+        <!--        <button type="button" @click="isShowSuccessModal = true">open modal</button>-->
         <p class="text-3xl font-bold">Register</p>
         <p class="text-gray-500">Sign up for using Mhalong</p>
       </div>
       <div class="mt-4 flex flex-col">
         <div class="mb-2">
           <label for="username" class="text-gray-500"
-            >Username<span class="text-red-500">*</span></label
+          >Username<span class="text-red-500">*</span></label
           >
           <div class="flex items-center">
             <input
-              name="username"
-              v-model="username"
-              type="text"
-              class="border p-1 rounded-md w-full px-2"
-              placeholder="Username"
+                name="username"
+                v-model="username"
+                type="text"
+                class="border p-1 rounded-md w-full px-2"
+                placeholder="Username"
             />
           </div>
           <p class="text-xs text-red-500">{{ errors.username }}</p>
@@ -28,51 +33,51 @@
       </div>
       <div class="mb-2">
         <label for="password" class="text-gray-500"
-          >Password<span class="text-red-500">*</span></label
+        >Password<span class="text-red-500">*</span></label
         >
         <div class="relative">
           <input
-            v-model="password"
-            :type="showPasswordPassword ? 'text' : 'password'"
-            id="password"
-            class="border p-1 w-full rounded-md px-2"
-            placeholder="รหัสผ่าน"
-            required
+              v-model="password"
+              :type="showPasswordPassword ? 'text' : 'password'"
+              id="password"
+              class="border p-1 w-full rounded-md px-2"
+              placeholder="รหัสผ่าน"
+              required
           />
           <span
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-            @click="togglePassword('Password')"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              @click="togglePassword('Password')"
           >
-            <Icon :name="eyeIconPassword" color="black" />
+            <Icon :name="eyeIconPassword" color="black"/>
           </span>
         </div>
         <p class="text-xs text-red-500">{{ errors.password }}</p>
       </div>
       <div class="mb-2">
         <label for="confirmPassword" class="text-gray-500"
-          >Confirm Password<span class="text-red-500">*</span></label
+        >Confirm Password<span class="text-red-500">*</span></label
         >
         <div class="relative">
           <input
-            v-model="confirmPassword"
-            :type="showPasswordConfirm ? 'text' : 'password'"
-            id="confirmPassword"
-            class="border p-1 w-full rounded-md px-2"
-            placeholder="ยืนยันรหัสผ่าน"
-            required
+              v-model="confirmPassword"
+              :type="showPasswordConfirm ? 'text' : 'password'"
+              id="confirmPassword"
+              class="border p-1 w-full rounded-md px-2"
+              placeholder="ยืนยันรหัสผ่าน"
+              required
           />
           <span
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-            @click="togglePassword('Confirm')"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              @click="togglePassword('Confirm')"
           >
-            <Icon :name="eyeIconConfirm" color="black" />
+            <Icon :name="eyeIconConfirm" color="black"/>
           </span>
         </div>
         <p class="text-xs text-red-500">{{ errors.confirmPassword }}</p>
       </div>
       <div class="py-2">
         <button
-          class="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+            class="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
         >
           Sign Up
         </button>
@@ -80,63 +85,94 @@
       <div class="py-2">
         <p class="text-gray-500">
           Already have an account?
-          <a href="/login" class="text-blue-800 underline">Login</a>
+          <NuxtLink to="/login">
+            <span class="text-blue-800 underline">Login</span>
+          </NuxtLink>
         </p>
       </div>
     </form>
   </div>
 </template>
 
-<script setup>
-import { useField, useForm } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
-import * as zod from "zod";
-import { ref, computed } from "vue";
+<script lang="ts" setup>
+import { useField, useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as zod from 'zod'
+import { ref, computed } from 'vue'
 
-const inputPassword = ref("");
-const showPasswordPassword = ref(false);
-const showPasswordConfirm = ref(false);
+const isShowSuccessModal = ref<boolean>(false)
+const isLoginFail = ref<boolean>(false)
+
+const showPasswordPassword = ref(false)
+const showPasswordConfirm = ref(false)
 
 const togglePassword = (field) => {
-  if (field === "Password") {
-    showPasswordPassword.value = !showPasswordPassword.value;
-  } else if (field === "Confirm") {
-    showPasswordConfirm.value = !showPasswordConfirm.value;
+  if (field === 'Password') {
+    showPasswordPassword.value = !showPasswordPassword.value
+  } else if (field === 'Confirm') {
+    showPasswordConfirm.value = !showPasswordConfirm.value
   }
-};
+}
 
 const eyeIconPassword = computed(() =>
-  showPasswordPassword.value ? "uil:eye" : "uil:eye-slash"
-);
+    showPasswordPassword.value ? 'uil:eye' : 'uil:eye-slash',
+)
 
 const eyeIconConfirm = computed(() =>
-  showPasswordConfirm.value ? "uil:eye" : "uil:eye-slash"
-);
+    showPasswordConfirm.value ? 'uil:eye' : 'uil:eye-slash',
+)
+
+// const validationSchema = toTypedSchema(
+//     zod.object({
+//       username: zod.string().min(1, 'กรุณากรอกข้อมูล').min(8, { message: 'กรุณากรอกข้อมูล' }),
+//       password: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
+//       confirmPassword: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
+//     }),
+// )
 
 const validationSchema = toTypedSchema(
-  zod.object({
-    username: zod
-      .string()
-      .nonempty("กรุณากรอกข้อมูล")
-      .min(8, { message: "กรุณากรอกข้อมูล" }),
-    password: zod
-      .string()
-      .nonempty("กรุณากรอกข้อมูล")
-      .min(8, { message: "กรุณากรอกข้อมูล" }),
-    confirmPassword: zod
-      .string()
-      .nonempty("กรุณากรอกข้อมูล")
-      .min(8, { message: "กรุณากรอกข้อมูล" }),
-  })
-);
+    zod.object({
+      username: zod.string().min(5, { message: 'กรุณากรอกข้อมูล' }),
+      password: zod.string().min(4, { message: 'กรุณากรอกข้อมูล' }),
+      confirmPassword: zod.string().min(4, { message: 'กรุณากรอกข้อมูล' }),
+    }).refine((data) => data.password === data.confirmPassword, {
+      message: 'กรุณากรอกยืนยันรหัสผ่านให้ตรงกัน',
+      path: ['confirmPassword'],
+    }),
+)
+
 const { handleSubmit, errors } = useForm({
   validationSchema,
-});
-const { value: username } = useField("username");
-const { value: password } = useField("password");
-const { value: confirmPassword } = useField("confirmPassword");
+})
 
+const { value: username } = useField('username')
+const { value: password } = useField('password')
+const { value: confirmPassword } = useField('confirmPassword')
 const onSubmit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2));
-});
+  if (values.password != values.confirmPassword) {
+    isLoginFail.value = true
+  } else {
+    fetch('https://vote-api.mhalong.com/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      }),
+    }).then(response => response.json()).then((response) => {
+      console.log('data', response)
+      if (response.ok) {
+        isShowSuccessModal.value = true
+        window.location.href = '/login'
+      } else {
+        isLoginFail.value = true
+      }
+    }).catch((error) => {
+      console.error('Error:', error)
+    })
+  }
+})
 </script>
