@@ -35,7 +35,7 @@
               >
                 {{ title }}
               </DialogTitle>
-              <div class="mt-2 text-center text-lg text-gray-500">
+              <div class="mt-2 text-center text-lg text-gray-500 whitespace-pre-line">
                 <slot/>
                 {{ description }}
               </div>
@@ -79,5 +79,6 @@ const closeModal = () => {
 }
 const openModal = () => {
   emits('update:modelValue', true)
+
 }
 </script>

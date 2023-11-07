@@ -1,7 +1,7 @@
 <template>
-  <FailModal v-model="isLoginFail" title="ไม่สามารถเข้าสู่ระบบได้" description="email or password is an invalid">
-  </FailModal>
-  <div class="h-screen flex items-center justify-center lg:bg-blue-500">
+  <ModalFail v-model="isShowFailModal" title="ไม่สามารถเข้าสู่ระบบได้" description="email or password is an invalid">
+  </ModalFail>
+  <div class="h-screen flex items-center justify-center lg:bg-blue-400">
     <Head>
       <Title>เข้าสู่ระบบ - Mhalong</Title>
       <Meta name="description" content="My app description"/>
@@ -69,14 +69,18 @@
     </form>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as zod from 'zod'
 import { ref, computed } from 'vue'
+import axios from 'axios'
+import ModalFail from '~/components/ModalFail.vue'
+const router = useRouter()
 
+const isShowFailModal = ref<boolean>(false)
 const showPasswordPassword = ref(false)
-const isLoginFail = ref(false)
+const loginErrorMessage = ref<string>('')
 
 const togglePassword = (field) => {
   if (field === 'Password') {
@@ -90,7 +94,7 @@ const eyeIconPassword = computed(() =>
 
 const validationSchema = toTypedSchema(
     zod.object({
-      username: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
+      username: zod.string().min(5, { message: 'กรุณากรอกข้อมูล' }),
       password: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
     }),
 )
@@ -99,24 +103,21 @@ const { handleSubmit, errors } = useForm({
 })
 const { value: username } = useField('username')
 const { value: password } = useField('password')
+
 const onSubmit = handleSubmit((values) => {
-  fetch('https://vote-api.mhalong.com/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: values.username,
-      password: values.password,
-    }),
-  }).then((response) => {
-    if (response.ok) {
-      alert('Login success')
-    } else {
-      isLoginFail.value = true
+  console.log('Im here')
+  axios.post('https://vote-api.mhalong.com/auth/login', {
+    username: values.username,
+    password: values.password
+  }).then((res) => {
+    router.push('/home')
+  }).catch((e) => {
+    console.error('Error:', e)
+    const res = e.response.data
+    isShowFailModal.value = true
+    for (const [key, value] of Object.entries(res.fields)) {
+      loginErrorMessage.value += `${key}: ${value.message}\n`
     }
-  }).catch((error) => {
-    console.error('Error', error)
   })
 })
 

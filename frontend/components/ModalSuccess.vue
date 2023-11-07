@@ -58,6 +58,7 @@
 </template>
 
 <script lang="ts" setup>
+
 import {
   TransitionRoot,
   TransitionChild,
@@ -72,9 +73,9 @@ defineProps<{
   description: string
 }>()
 
-const emits = defineEmits(['update:modelValue'])
-
+const emits = defineEmits(['update:modelValue','close'])
 const closeModal = () => {
+  emits('close')
   emits('update:modelValue', false)
 }
 const openModal = () => {

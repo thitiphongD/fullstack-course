@@ -1,16 +1,15 @@
 <template>
-  <FailModal v-model="isLoginFail" title="สมัครสมาชิกไม่สำเร็จ" description="มีบางอย่างผิดพลาด">
-  </FailModal>
-  <Modal v-model="isShowSuccessModal" title="สมัครสมาชิกสำเร็จ" description="คุณสามารถเข้าสู่ระบบได้เลย">
-  </Modal>
-  <div class="h-screen flex items-center justify-center lg:bg-blue-500">
+  <ModalFail v-model="isShowFailModal" title="สมัครสมาชิกไม่สำเร็จ" :description="registerErrorMessage">
+  </ModalFail>
+  <ModalSuccess v-model="isShowSuccessModal" title="สมัครสมาชิกสำเร็จ" description="คุณสามารถเข้าสู่ระบบได้เลย" @close="router.push('/login')">
+  </ModalSuccess>
+  <div class="h-screen flex items-center justify-center lg:bg-blue-400">
     <Head>
       <Title>ลงทะเบียน - Mhalong</Title>
       <Meta name="description" content="My app description"/>
     </Head>
     <form @submit="onSubmit" class="bg-white w-full h-5/6 rounded-md p-6 lg:w-2/5">
       <div class="text-center">
-        <!--        <button type="button" @click="isShowSuccessModal = true">open modal</button>-->
         <p class="text-3xl font-bold">Register</p>
         <p class="text-gray-500">Sign up for using Mhalong</p>
       </div>
@@ -99,12 +98,16 @@ import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as zod from 'zod'
 import { ref, computed } from 'vue'
+import axios from 'axios'
+import ModalFail from '~/components/ModalFail.vue'
+import ModalSuccess from '~/components/ModalSuccess.vue'
 
+const router = useRouter()
 const isShowSuccessModal = ref<boolean>(false)
-const isLoginFail = ref<boolean>(false)
-
+const isShowFailModal = ref<boolean>(false)
 const showPasswordPassword = ref(false)
 const showPasswordConfirm = ref(false)
+const registerErrorMessage = ref<string>('')
 
 const togglePassword = (field) => {
   if (field === 'Password') {
@@ -122,19 +125,11 @@ const eyeIconConfirm = computed(() =>
     showPasswordConfirm.value ? 'uil:eye' : 'uil:eye-slash',
 )
 
-// const validationSchema = toTypedSchema(
-//     zod.object({
-//       username: zod.string().min(1, 'กรุณากรอกข้อมูล').min(8, { message: 'กรุณากรอกข้อมูล' }),
-//       password: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
-//       confirmPassword: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
-//     }),
-// )
-
 const validationSchema = toTypedSchema(
     zod.object({
       username: zod.string().min(5, { message: 'กรุณากรอกข้อมูล' }),
-      password: zod.string().min(4, { message: 'กรุณากรอกข้อมูล' }),
-      confirmPassword: zod.string().min(4, { message: 'กรุณากรอกข้อมูล' }),
+      password: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
+      confirmPassword: zod.string().min(8, { message: 'กรุณากรอกข้อมูล' }),
     }).refine((data) => data.password === data.confirmPassword, {
       message: 'กรุณากรอกยืนยันรหัสผ่านให้ตรงกัน',
       path: ['confirmPassword'],
@@ -149,29 +144,23 @@ const { value: username } = useField('username')
 const { value: password } = useField('password')
 const { value: confirmPassword } = useField('confirmPassword')
 const onSubmit = handleSubmit((values) => {
+  registerErrorMessage.value = ''
   if (values.password != values.confirmPassword) {
     isLoginFail.value = true
   } else {
-    fetch('https://vote-api.mhalong.com/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: values.username,
-        password: values.password,
-        confirmPassword: values.confirmPassword,
-      }),
-    }).then(response => response.json()).then((response) => {
-      console.log('data', response)
-      if (response.ok) {
-        isShowSuccessModal.value = true
-        window.location.href = '/login'
-      } else {
-        isLoginFail.value = true
+    axios.post('https://vote-api.mhalong.com/auth/register', {
+      username: values.username,
+      password: values.password,
+      confirmPassword: values.confirmPassword,
+    }).then((res) => {
+      isShowSuccessModal.value = true
+    }).catch((e) => {
+      console.error('Error:', e)
+      const res = e.response.data
+      isShowFailModal.value = true
+      for (const [key, value] of Object.entries(res.fields)) {
+        registerErrorMessage.value += `${key}: ${value.message}\n`
       }
-    }).catch((error) => {
-      console.error('Error:', error)
     })
   }
 })
