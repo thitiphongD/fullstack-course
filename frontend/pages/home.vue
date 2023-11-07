@@ -37,17 +37,16 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-4 py-10">
+
           <div class="bg-white row-span-1 col-span-1 rounded-md h-40 p-3">
             <div class="flex items-center justify-between">
-              <p class="text-blue-400 font-bold text-2xl">Title</p>
-              <button class="group border border-blue-400 rounded-md py-1 px-3 cursor-pointer text-blue-400 font-bold active:text-white active:bg-blue-400 transition-all duration-300">
+              <p class="text-blue-400 font-bold text-xl w-4/5 truncate">Like so many organizations these days, Autodesk is a</p>
+              <button class="group border border-blue-400 rounded-md py-1 w-24 cursor-pointer text-blue-400 font-bold active:text-white active:bg-blue-400 transition-all duration-300">
                 1 votes
               </button>
-
-
             </div>
             <div class="py-2 h-2/4">
-              <p class="text-sm text-gray-400">Like so many organizations these days, Autodesk is a company in
+              <p class="text-sm text-gray-400 line-clamp-2">Like so many organizations these days, Autodesk is a company in
                 transition. It was until recently a traditional boxed software company
                 selling licenses. Yet its own business model disruption is only part of
                 the story
@@ -63,9 +62,27 @@
             </div>
           </div>
 
-          <div class="bg-white rounded-md">
-            <span>02</span>
+          <div class="bg-white row-span-1 col-span-1 rounded-md h-40 p-3">
+            <div class="flex items-center justify-between">
+              <p class="text-blue-400 font-bold text-xl w-4/5 truncate">foo</p>
+              <button class="group border border-blue-400 rounded-md py-1 w-24 cursor-pointer text-blue-400 font-bold active:text-white active:bg-blue-400 transition-all duration-300">
+                1 votes
+              </button>
+            </div>
+            <div class="py-2 h-2/4">
+              <p class="text-sm text-gray-400 line-clamp-2">bar
+              </p>
+            </div>
+            <hr class="h-px bg-gray-400 border-0">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center py-2 space-x-1">
+                <span class="text-sm text-gray-400">By</span>
+                <span class="text-sm text-gray-400">username</span>
+              </div>
+              <p class="text-sm text-gray-400">19 ก.ย. 2566 8:58:15 PM</p>
+            </div>
           </div>
+
           <div class="bg-white rounded-md">
             <span>03</span>
           </div>
