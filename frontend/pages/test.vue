@@ -1,4 +1,5 @@
 <template>
+<<<<<<< Updated upstream
   <div class="fixed inset-0 flex items-center justify-center">
     <button
         type="button"
@@ -7,6 +8,16 @@
     >
       Open dialog
     </button>
+=======
+  <div>
+    <ul>
+      <li v-for="exam in exams" :key="exam.id">
+        <p>Exam ID: {{ exam.id }}</p>
+        <p>Exam Name: {{ exam.name }}</p>
+        <p>Exam Score: {{ exam.score }}</p>
+      </li>
+    </ul>
+>>>>>>> Stashed changes
   </div>
   <TransitionRoot appear :show="isOpen" as="template">
     <Dialog as="div" @close="closeModal" class="relative z-10">
@@ -68,6 +79,7 @@
   </TransitionRoot>
 </template>
 
+<<<<<<< Updated upstream
 <script setup>
 import { ref } from 'vue'
 import {
@@ -86,4 +98,17 @@ function closeModal() {
 function openModal() {
   isOpen.value = true
 }
+=======
+<script setup lang="ts">
+import { ref } from "vue";
+
+const exams = ref([
+  { id: 1, name: "Math Exam", score: 95 },
+  { id: 2, name: "History Exam", score: 88 },
+  { id: 3, name: "Science Exam", score: 78 },
+  { id: 4, name: "English Exam", score: 92 },
+]);
+>>>>>>> Stashed changes
 </script>
+
+<style scoped></style>
