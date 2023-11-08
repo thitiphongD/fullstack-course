@@ -143,7 +143,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const route = useRoute()
 const router = useRouter()
 const search = ref(route.query.q)

@@ -118,8 +118,11 @@ const onSubmit = handleSubmit((values) => {
       password: values.password,
     })
     .then((res) => {
+    const data = res.data;
+    for (const [key, value] of Object.entries(data)) {
+      localStorage.setItem(key, value);
+    }
       sessionStorage.setItem("sessionTimeout", String(Date.now() + 1800000));
-      localStorage.setItem("username", values.username);
       router.push("/home");
     })
     .catch((e) => {
