@@ -58,8 +58,7 @@
                         class="border text-gray-900 text-sm rounded-lg w-full p-2.5"
                         placeholder="Name"
                     />
-                    <input name="name" v-model="namePost" type="text" class="border text-gray-900 text-sm rounded-lg w-full p-2.5" />
-                    <span>{{ errorMessage }}</span>
+
                   </div>
                   <div class="mb-6">
                     <label
@@ -149,12 +148,13 @@
       </div>
     </Dialog>
   </TransitionRoot>
-
+  <ModalSuccess v-model="isShowSuccessModal" title="Success" description="Post created">
+  </ModalSuccess>
   <Head>
     <Title>Vote System - Mhalong</Title>
     <Meta name="description" content="My app description"/>
   </Head>
-  <div class="h-screen lg:bg-blue-400">
+  <body class="h-screen lg:bg-blue-400">
     <nav
         class="relative flex flex-wrap items-center justify-between px-3 py-3 bg-gray-800 mb-3"
     >
@@ -170,6 +170,7 @@
           >
             Mhalong
           </NuxtLink>
+          <button @click="vote">vote</button>
         </div>
         <div class="lg:flex lg:flex-grow items-center">
           <ul class="flex flex-col lg:flex-row list-none ml-auto">
@@ -357,7 +358,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </body>
 </template>
 <script setup lang="ts">
 import {
@@ -374,16 +375,12 @@ import {
 import { ref, computed } from 'vue'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import ModalSuccess from '~/components/ModalSuccess.vue'
 
-import { useField } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
-import * as zod from 'zod';
-
-const fieldSchema = toTypedSchema(
-    zod.string().nonempty('Field is required').email({ message: 'Must be a valid email' })
-);
-const { value, errorMessage } = useField('email', fieldSchema);
-
+const isShowSuccessModal = ref<boolean>(false)
+// const test = (): void => {
+//   isShowSuccessModal.value = true
+// }
 
 const router = useRouter();
 const token =
@@ -399,6 +396,7 @@ const items = ref([])
 const countVote = ref<number>(0)
 const namePost = ref<string>('')
 const descriptionPost = ref<string>('')
+const idVote = ref<string>('')
 
 onMounted(() => {
   axios.get(
@@ -409,6 +407,7 @@ onMounted(() => {
         },
       },
   ).then((res) => {
+    console.log(res.data)
     countVote.value = res.data.count
     items.value = res.data.items
     voteItems.value = res.data.items
@@ -416,6 +415,10 @@ onMounted(() => {
     console.error('Error:', e)
   })
 })
+
+// const vote = (id: string) => {
+//
+// }
 
 const isOpen = ref<boolean>(false)
 const closeModal = (): void => {
@@ -460,6 +463,7 @@ const onSubmit = (values: any) => {
     const data = res.data;
     console.log('tada', data);
     isOpenVote.value = false
+    isShowSuccessModal.value = true
   })
   .catch((e) => {
     console.error("Error:", e);
