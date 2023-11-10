@@ -155,112 +155,33 @@
     <Meta name="description" content="My app description"/>
   </Head>
   <body class="h-screen lg:bg-blue-400">
-    <nav
-        class="relative flex flex-wrap items-center justify-between px-3 py-3 bg-gray-800 mb-3"
+  <nav
+      class="relative flex flex-wrap items-center justify-between px-3 py-3 bg-gray-800 mb-3"
+  >
+    <div
+        class="container px-4 mx-auto flex flex-wrap items-center justify-between"
     >
       <div
-          class="container px-4 mx-auto flex flex-wrap items-center justify-between"
+          class="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start"
       >
-        <div
-            class="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start"
+        <NuxtLink
+            class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white"
+            to="/home"
         >
-          <NuxtLink
-              class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white"
-              to="/home"
-          >
-            Mhalong
-          </NuxtLink>
-          <button @click="vote">vote</button>
-        </div>
-        <div class="lg:flex lg:flex-grow items-center">
-          <ul class="flex flex-col lg:flex-row list-none ml-auto">
-            <li class="nav-item">
-              <Menu as="div" class="relative inline-block text-left">
-                <div>
-                  <MenuButton
-                      class="inline-flex w-full justify-center rounded-md text-xl text-white font-bold"
-                  >
-                    {{ username }}
-                  </MenuButton>
-                </div>
-                <transition
-                    enter-active-class="transition duration-100 ease-out"
-                    enter-from-class="transform scale-95 opacity-0"
-                    enter-to-class="transform scale-100 opacity-100"
-                    leave-active-class="transition duration-75 ease-in"
-                    leave-from-class="transform scale-100 opacity-100"
-                    leave-to-class="transform scale-95 opacity-0"
-                >
-                  <MenuItems
-                      class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                  >
-                    <div class="px-1 py-1">
-                      <MenuItem v-slot="{ active }">
-                        <button
-                            type="button"
-                            @click="openModal"
-                            :class="[
-                            active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                            'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                          ]"
-                        >
-                          New Post
-                        </button>
-                      </MenuItem>
-                    </div>
-
-                    <div class="px-1 py-1">
-                      <MenuItem v-slot="{ active }">
-                        <button
-                            :class="[
-                            active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                            'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                          ]"
-                        >
-                          Your Posts
-                        </button>
-                      </MenuItem>
-                      <MenuItem v-slot="{ active }">
-                        <NuxtLink to="/login">
-                          <button
-                              :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900',
-                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                            ]"
-                          >
-                            Logout
-                          </button>
-                        </NuxtLink>
-                      </MenuItem>
-                    </div>
-                  </MenuItems>
-                </transition>
-              </Menu>
-            </li>
-          </ul>
-        </div>
+          Mhalong
+        </NuxtLink>
       </div>
-    </nav>
-
-    <div class="px-32 py-10">
-      <p class="text-3xl font-bold">
-        All Posts <span>({{ countVote }})</span>
-      </p>
-      <div class="py-5">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
+      <div class="lg:flex lg:flex-grow items-center">
+        <ul class="flex flex-col lg:flex-row list-none ml-auto">
+          <li class="nav-item">
             <Menu as="div" class="relative inline-block text-left">
               <div>
                 <MenuButton
-                    class="inline-flex w-full justify-center rounded-md items-center px-4 py-2"
+                    class="inline-flex w-full justify-center rounded-md text-xl text-white font-bold"
                 >
-                  Sort
-                  <Icon name="material-symbols:keyboard-arrow-down"/>
+                  {{ username }}
                 </MenuButton>
               </div>
-
               <transition
                   enter-active-class="transition duration-100 ease-out"
                   enter-from-class="transform scale-95 opacity-0"
@@ -270,94 +191,172 @@
                   leave-to-class="transform scale-95 opacity-0"
               >
                 <MenuItems
-                    class="absolute left-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                   <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
                       <button
+                          type="button"
+                          @click="openModal"
                           :class="[
-                          active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                          'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                        ]"
+                            active ? 'bg-blue-500 text-white' : 'text-gray-900',
+                            'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                          ]"
                       >
-                        Newest
+                        New Post
                       </button>
                     </MenuItem>
+                  </div>
+
+                  <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
                       <button
                           :class="[
-                          active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                          'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                        ]"
+                            active ? 'bg-blue-500 text-white' : 'text-gray-900',
+                            'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                          ]"
                       >
-                        Most votes
+                        Your Posts
                       </button>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                      <NuxtLink to="/login">
+                        <button
+                            :class="[
+                              active
+                                ? 'bg-blue-500 text-white'
+                                : 'text-gray-900',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                        >
+                          Logout
+                        </button>
+                      </NuxtLink>
                     </MenuItem>
                   </div>
                 </MenuItems>
               </transition>
             </Menu>
-          </div>
-          <div class="mb-3">
-            <div class="relative mb-4 flex w-full flex-wrap items-stretch">
-              <input
-                  type="search"
-                  class="relative w-56 flex-auto rounded-md border p-2 shadow-md"
-                  placeholder="Search"
-                  aria-label="Search"
-                  aria-describedby="button-addon1"
-              />
-              <button
-                  class="relative flex items-center text-lg bg-blue-500 px-2 text-white shadow-md"
-                  type="button"
-                  id="button-addon1"
-                  data-te-ripple-init
-                  data-te-ripple-color="light"
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="px-32 py-10">
+    <p class="text-3xl font-bold">
+      All Posts <span>({{ countPost }})</span>
+    </p>
+    <div class="py-5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <Menu as="div" class="relative inline-block text-left">
+            <div>
+              <MenuButton
+                  class="inline-flex w-full justify-center rounded-md items-center px-4 py-2"
               >
-                <Icon name="material-symbols:search"/>
-              </button>
+                Sort
+                <Icon name="material-symbols:keyboard-arrow-down"/>
+              </MenuButton>
             </div>
+
+            <transition
+                enter-active-class="transition duration-100 ease-out"
+                enter-from-class="transform scale-95 opacity-0"
+                enter-to-class="transform scale-100 opacity-100"
+                leave-active-class="transition duration-75 ease-in"
+                leave-from-class="transform scale-100 opacity-100"
+                leave-to-class="transform scale-95 opacity-0"
+            >
+              <MenuItems
+                  class="absolute left-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              >
+                <div class="px-1 py-1">
+                  <MenuItem v-slot="{ active }">
+                    <button
+                        :class="[
+                          active ? 'bg-blue-500 text-white' : 'text-gray-900',
+                          'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                        ]"
+                    >
+                      Newest
+                    </button>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <button
+                        :class="[
+                          active ? 'bg-blue-500 text-white' : 'text-gray-900',
+                          'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                        ]"
+                    >
+                      Most votes
+                    </button>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </transition>
+          </Menu>
+        </div>
+        <div class="mb-3">
+          <div class="relative mb-4 flex w-full flex-wrap items-stretch">
+            <input
+                type="search"
+                class="relative w-56 flex-auto rounded-md border p-2 shadow-md"
+                placeholder="Search"
+                aria-label="Search"
+                aria-describedby="button-addon1"
+            />
+            <button
+                class="relative flex items-center text-lg bg-blue-500 px-2 text-white shadow-md"
+                type="button"
+                id="button-addon1"
+                data-te-ripple-init
+                data-te-ripple-color="light"
+            >
+              <Icon name="material-symbols:search"/>
+            </button>
           </div>
         </div>
+      </div>
 
+      <div
+          class="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-4 py-10"
+      >
         <div
-            class="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-4 py-10"
+            class="bg-white row-span-1 col-span-1 rounded-md h-40 p-3 cursor-pointer"
+            v-for="(item, i) in items"
+            :key="i"
         >
-          <div
-              class="bg-white row-span-1 col-span-1 rounded-md h-40 p-3 cursor-pointer"
-              v-for="(item, i) in items"
-              :key="i"
-              @click="openVoteModal(item)"
-          >
-            <div class="flex items-center justify-between">
-              <p class="text-blue-400 font-bold text-xl w-4/5 truncate">
-                {{ item.name }}
-              </p>
-              <button
-                  class="group border border-blue-400 rounded-md py-1 w-24 cursor-pointer text-blue-400 font-bold transition-all duration-300 hover:bg-blue-400 hover:text-white active:bg-blue-200 active:text-white focus:outline-none"
-              >
-                1 votes
-              </button>
+          <div class="flex items-center justify-between">
+            <p class="text-blue-400 font-bold text-xl w-4/5 truncate">
+              {{ item.name }}
+            </p>
+            <button
+                class="group border border-blue-400 rounded-md py-1 w-24 cursor-pointer text-blue-400 font-bold transition-all duration-300 hover:bg-blue-400 hover:text-white active:bg-blue-200 active:text-white focus:outline-none"
+                @click="vote(item.id)"
+            >
+              {{item.vote_count}} Votes
+            </button>
+          </div>
+          <div class="py-2 h-2/4" @click="openVoteModal(item)">
+            <p class="text-sm text-gray-400 line-clamp-2">
+              {{ item.description }}
+            </p>
+          </div>
+          <hr class="h-px bg-gray-400 border-0"/>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center py-2 space-x-1">
+              <span class="text-sm text-gray-400">By</span>
+              <span class="text-sm text-gray-400">{{
+                  item.user.username
+                }}</span>
             </div>
-            <div class="py-2 h-2/4">
-              <p class="text-sm text-gray-400 line-clamp-2">
-                {{ item.description }}
-              </p>
-            </div>
-            <hr class="h-px bg-gray-400 border-0"/>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center py-2 space-x-1">
-                <span class="text-sm text-gray-400">By</span>
-                <span class="text-sm text-gray-400">{{
-                    item.user.username
-                  }}</span>
-              </div>
-              <p class="text-sm text-gray-400">{{ dayjs(item.created_at) }}</p>
-            </div>
+            <p class="text-sm text-gray-400">{{ dayjs(item.created_at) }}</p>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </body>
 </template>
 <script setup lang="ts">
@@ -382,7 +381,7 @@ const isShowSuccessModal = ref<boolean>(false)
 //   isShowSuccessModal.value = true
 // }
 
-const router = useRouter();
+const router = useRouter()
 const token =
     typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
 const username =
@@ -393,22 +392,21 @@ if (token == null || token == '') {
 }
 
 const items = ref([])
-const countVote = ref<number>(0)
+const countPost = ref<number>(0)
 const namePost = ref<string>('')
 const descriptionPost = ref<string>('')
-const idVote = ref<string>('')
 
 onMounted(() => {
   axios.get(
       'https://vote-api.mhalong.com/posts?limit=30&page=1&q=&order_by=posts.created_at+DESC',
       {
         headers: {
-          Authorization: localStorage.getItem('access_token'),
+          Authorization: token,
         },
       },
   ).then((res) => {
-    console.log(res.data)
-    countVote.value = res.data.count
+    // console.log(res.data.items)
+    countPost.value = res.data.count
     items.value = res.data.items
     voteItems.value = res.data.items
   }).catch((e) => {
@@ -416,9 +414,17 @@ onMounted(() => {
   })
 })
 
-// const vote = (id: string) => {
-//
-// }
+const vote = (id: string) => {
+  axios.post(`https://vote-api.mhalong.com/posts/${id}/votes`, {},{
+    headers: {
+      Authorization: token,
+    },
+  }).then((res) => {
+    const data = res.data
+  }).catch((e) => {
+    console.error('Error:', e)
+  })
+}
 
 const isOpen = ref<boolean>(false)
 const closeModal = (): void => {
@@ -439,7 +445,7 @@ const openVoteModal = (item: any): void => {
   voteTitle.value = item.name
   voteDescription.value = item.description
   usernameVote.value = item.user.username
-  timeVote.value = item.created_at;
+  timeVote.value = item.created_at
 }
 
 const closeVoteModal = (): void => {
@@ -450,24 +456,21 @@ const voteItems = ref([])
 
 const onSubmit = (values: any) => {
   values.preventDefault()
-  axios
-  .post("https://vote-api.mhalong.com/posts", {
+  axios.post('https://vote-api.mhalong.com/posts', {
     name: namePost.value,
     description: descriptionPost.value,
-  },{
+  }, {
     headers: {
       Authorization: localStorage.getItem('access_token'),
     },
-  })
-  .then((res) => {
-    const data = res.data;
-    console.log('tada', data);
+  }).then((res) => {
+    const data = res.data
+    console.log('tada', data)
     isOpenVote.value = false
     isShowSuccessModal.value = true
+  }).catch((e) => {
+    console.error('Error:', e)
   })
-  .catch((e) => {
-    console.error("Error:", e);
-  });
 }
 
 // const onSubmit = handleSubmit((values) => {
@@ -490,7 +493,6 @@ const onSubmit = (values: any) => {
 //     console.error("Error:", e);
 //   });
 // })
-
 
 // https://vote-api.mhalong.com/posts/26736f2b-816e-4b74-b1b2-8bc51f8876ee/votes
 // https://vote-api.mhalong.com/posts

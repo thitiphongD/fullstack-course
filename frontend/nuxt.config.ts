@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "nuxt-icon",
     "@vee-validate/nuxt",
+    '@pinia/nuxt',
   ],
   veeValidate: {
     autoImports: true,
